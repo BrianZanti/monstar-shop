@@ -9,9 +9,12 @@
   </head>
 
   <body>
-    <nav class = "topnav">
+    <nav class = "topnav" id="navigation">
+      <%= link_to "Monstar Shop", root_path %>
       <%= link_to "All Merchants", "/merchants"%>
       <%= link_to "All Items", "/items"%>
+      <%= link_to "Login" %>
+      <%= link_to "Register" %>
       <%= link_to "Cart: #{cart.total_items}", "/cart" %>
     </nav>
     <% flash.each do |name, msg| %>
