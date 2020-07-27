@@ -13,9 +13,14 @@
       <%= link_to "Monstar Shop", root_path %>
       <%= link_to "All Merchants", "/merchants"%>
       <%= link_to "All Items", "/items"%>
-      <%= link_to "Login" %>
-      <%= link_to "Register" %>
+      <%= link_to "Login" unless current_user %>
+      <%= link_to "Register" unless current_user %>
       <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+      <% if current_user %>
+        <p>Logged In as <%= current_user.name %></p>
+        <%= link_to "Log Out" %>
+        <%= link_to "Profile" %>
+      <% end %>
     </nav>
     <% flash.each do |name, msg| %>
       <div class= "<%=name%>-flash">
