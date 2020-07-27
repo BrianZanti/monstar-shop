@@ -17,13 +17,13 @@ RSpec.describe User do
       expect(user.role).to eq("default")
       expect(user.default?).to be(true)
       expect(user.admin?).to be(false)
-      expect(user.merchant_admin?).to be(false)
+      expect(user.merchant_employee?).to be(false)
     end
 
     it 'can be a merchant admin' do
-      user = create(:user, role: :merchant_admin)
-      expect(user.role).to eq("merchant_admin")
-      expect(user.merchant_admin?).to be(true)
+      user = create(:user, role: :merchant_employee)
+      expect(user.role).to eq("merchant_employee")
+      expect(user.merchant_employee?).to be(true)
       expect(user.default?).to be(false)
       expect(user.admin?).to be(false)
     end
@@ -33,7 +33,7 @@ RSpec.describe User do
       expect(user.role).to eq("admin")
       expect(user.admin?).to be(true)
       expect(user.default?).to be(false)
-      expect(user.merchant_admin?).to be(false)
+      expect(user.merchant_employee?).to be(false)
     end
   end
 end
