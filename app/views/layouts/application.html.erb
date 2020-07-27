@@ -9,16 +9,8 @@
   </head>
 
   <body>
-    <nav class = "topnav">
-      <%= link_to "All Merchants", "/merchants"%>
-      <%= link_to "All Items", "/items"%>
-      <%= link_to "Cart: #{cart.total_items}", "/cart" %>
-    </nav>
-    <% flash.each do |name, msg| %>
-      <div class= "<%=name%>-flash">
-        <p><%= msg %></p>
-      </div>
-    <% end %>
+    <%= render partial: 'layouts/navigation' %>
+    <%= render partial: 'layouts/flash' %>
     <%= yield %>
   </body>
 </html>
