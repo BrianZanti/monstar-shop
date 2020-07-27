@@ -60,4 +60,67 @@ RSpec.describe 'Site Navigation' do
       end
     end
   end
+
+  describe "as a Merchant Employee" do
+    before :each do
+      @user = create(:merchant_employee)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+    end
+
+    it "shows a message that the merchant employee is logged in" do
+      visit '/'
+
+      within '#navigation' do
+        expect(page).to have_content("Logged In as #{@user.name}")
+      end
+    end
+
+    it "has all user links, plus a dashboard link" do
+      visit '/'
+
+      within '#navigation' do
+        expect(page).to have_link('Merchant Dashboard')
+        expect(page).to have_link('Monstar Shop')
+        expect(page).to have_link('Items')
+        expect(page).to have_link('Merchants')
+        expect(page).to have_link('Log Out')
+        expect(page).to have_link('Cart: 0')
+        expect(page).to have_link('Profile')
+        expect(page).to_not have_link('Login')
+        expect(page).to_not have_link('Register')
+      end
+    end
+  end
+
+  describe "As an Admin" do
+    before :each do
+      @user = create(:admin)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+    end
+
+    it "shows a message that the admin is logged in" do
+      visit '/'
+
+      within '#navigation' do
+        expect(page).to have_content("Logged In as #{@user.name}")
+      end
+    end
+
+    it "has all user links, plus an Admin dashboard and admin users link, minus a cart" do
+      visit '/'
+
+      within '#navigation' do
+        expect(page).to have_link('Admin Dashboard')
+        expect(page).to have_link('Users')
+        expect(page).to have_link('Monstar Shop')
+        expect(page).to have_link('Items')
+        expect(page).to have_link('Merchants')
+        expect(page).to have_link('Log Out')
+        expect(page).to have_link('Profile')
+        expect(page).to_not have_link('Cart: 0')
+        expect(page).to_not have_link('Login')
+        expect(page).to_not have_link('Register')
+      end
+    end
+  end
 end
