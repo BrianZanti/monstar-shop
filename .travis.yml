@@ -1,0 +1,14 @@
+language: ruby
+rvm:
+- 2.5.3
+before_install:
+- gem update --system
+script:
+- bundle exec rspec
+deploy:
+  provider: heroku
+  on: main
+  api_key:
+    secure: oTKj7rF0FuLQIEenx8ZuHctq22/1HglfKaYd8Eqpc/HUjcPwhiNUN+V/NyO868EwtyRZfoui3gdYe77CWF4hA9z32qee15TbZ0H6UtDf8qWxTFBzUbvC/4i+sQcPuXh8zUZV1YXZEFcjtvHh6VScxhSPEKGr11T0lPxQcdO59yj+m2jOdwDQ4T/ZrLcb1nFxZ13+oNn3KIGLvxMawL7dKWAlMWU1RXIPROAdoYKlLgR9vp7kWhsqsSZdOJ22o3K6szKpYiMklAGLXYzmkSj+UOEv1BLCBV8iHhaxu06TOpC6R5xRkN9XDxkqo6wINcXgkwtGljkFWCt2459FIizBpDxi2AhDvQc1WpPzTKNh1VmkMx9UZucgT5H2Xu/JtNpFh5+drX99NqKn+7Pps1+to93z5b7dLN67WqJUVbz83ltXl3ayEmOj+Sz4qnCDSsxlRasFd4FZdQ4uKx5WiVY0D8axG8U+nUM+/c6tHIVtZk69+LKW+gVs0lxoPE0ss8swZw/QHmBQc0NdAwPRTydtBDaXMbJqiMatmZ4e9Nx5EG/tsH3+beQXc1NnOQ/58k6ihvOS5lTALsSBUwoe3FBKGg9QPao4y1ct/jx7F78Ih0A5MpJXTcghYvoc/Ix75BoaMhadGGI1y//tCLRijo0nOF8684eSfUWLrO6IB+eLdEk=
+  app: monstar-shop
+  run: rails db:migrate
