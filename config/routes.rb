@@ -10,8 +10,9 @@ Rails.application.routes.draw do
   patch "/merchants/:id", to: "merchants#update"
   delete "/merchants/:id", to: "merchants#destroy"
 
+  resources :items, only: :show
   get "/items", to: "items#index"
-  get "/items/:id", to: "items#show"
+  # get "/items/:id", to: "items#show"
   get "/items/:id/edit", to: "items#edit"
   patch "/items/:id", to: "items#update"
   get "/merchants/:merchant_id/items", to: "items#index"
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
 
   get '/register', to: 'users#new'
   get '/login', to: 'sessions#new'
+  get '/logout', to: 'sessions#destroy'
   post '/sessions', to: 'sessions#create'
 
   resource :users, only: [:create]

@@ -18,6 +18,12 @@ class SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    session.clear
+    flash[:success] = 'You are now logged out.'
+    redirect_to root_path
+  end
+
   private
   def redirect_user
     redirect_to profile_path if current_user.default?

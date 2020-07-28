@@ -105,4 +105,18 @@ RSpec.describe 'User Login' do
     expect(page).to have_css('#login-form')
     expect(page).to have_content("Invalid email or password.")
   end
+
+  it 'users can log out' do
+    user = create(:user)
+    item = create(:item)
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+    
+    visit item_path(item)
+    click_button 'Add To Cart'
+    click_link 'Log Out'
+
+    expect(current_path).to eq(root_path)
+    expect(page).to have_content('You are now logged out.')
+    expect(page).to have_content('Cart: 0')
+  end
 end
