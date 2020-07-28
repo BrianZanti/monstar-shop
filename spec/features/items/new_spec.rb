@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Create Merchant Items" do
+  include ActionView::Helpers::NumberHelper
+
   describe "When I visit the merchant items index page" do
     before(:each) do
       @brian = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
@@ -44,7 +46,7 @@ RSpec.describe "Create Merchant Items" do
       expect(Item.last.active?).to be(true)
       expect("#item-#{Item.last.id}").to be_present
       expect(page).to have_content(name)
-      expect(page).to have_content("Price: $#{new_item.price}")
+      expect(page).to have_content("Price: #{number_to_currency(new_item.convert_price)}")
       expect(page).to have_css("img[src*='#{new_item.image}']")
       expect(page).to have_content("Active")
       expect(page).to_not have_content(new_item.description)
