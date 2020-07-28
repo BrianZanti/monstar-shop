@@ -69,9 +69,24 @@ describe Item, type: :model do
 
     it 'no orders' do
       expect(@chain.no_orders?).to eq(true)
-      order = Order.create(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
+      order = Order.create(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, user: create(:user))
       order.item_orders.create(item: @chain, price: @chain.price, quantity: 2)
       expect(@chain.no_orders?).to eq(false)
+    end
+  end
+
+  describe 'class methods' do
+    describe '.by_quantity_sold' do
+      before :each do
+        @item_1 = create(:item)
+        @item_2 = create(:item)
+        @item_3 = create(:item)
+        @item_4 = create(:item)
+        @item_5 = create(:item)
+        @item_6 = create(:item)
+        @item_7 = create(:item)
+        @item_8 = create(:item)
+      end
     end
   end
 end

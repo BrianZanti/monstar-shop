@@ -78,5 +78,9 @@ RSpec.describe "Items Index Page" do
       expect(page).to_not have_css("#item-#{@inactive_item_1.id}")
       expect(page).to_not have_css("#item-#{@inactive_item_2.id}")
     end
+
+    it 'has item statistics' do
+
+    end
   end
 end
