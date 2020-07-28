@@ -6,6 +6,7 @@ FactoryBot.define do
     state { "Florida"}
     zip  {"32825"}
     email  { "daffy.duck@gamil.com" }
+    password { 'password' }
 
     factory :merchant_employee do
       role {:merchant_employee}

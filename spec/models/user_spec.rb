@@ -9,6 +9,7 @@ RSpec.describe User do
     it { should validate_presence_of :city }
     it { should validate_presence_of :state }
     it { should validate_presence_of :zip }
+    it { should have_secure_password }
   end
 
   describe 'roles' do
