@@ -22,4 +22,19 @@ RSpec.describe "User Registration" do
       expect(page).to have_content("Welcome #{name}! You are now registered and logged in.")
     end
   end
+
+  it 'cannot register a user with missing info' do
+    visit register_path
+    click_button "Register"
+
+    expect(page).to have_css('#new_user')
+    expect(page).to have_content('Email can\'t be blank')
+    expect(page).to have_content('Name can\'t be blank')
+    expect(page).to have_content('Address can\'t be blank')
+    expect(page).to have_content('City can\'t be blank')
+    expect(page).to have_content('State can\'t be blank')
+    expect(page).to have_content('Zip can\'t be blank')
+    expect(page).to have_content('Password can\'t be blank')
+  end
+
 end
