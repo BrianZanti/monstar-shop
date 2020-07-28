@@ -68,7 +68,7 @@ RSpec.describe 'User Login' do
       fill_in :password, with: user.password
       click_button 'Login'
 
-      expect(current_path).to eq(merchant_path)
+      expect(current_path).to eq(merchant_dashboard_path)
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
     end
 
@@ -77,7 +77,7 @@ RSpec.describe 'User Login' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
       visit login_path
 
-      expect(current_path).to eq(merchant_path)
+      expect(current_path).to eq(merchant_dashboard_path)
       expect(page).to have_content("You are already logged in.")
     end
   end
@@ -110,7 +110,7 @@ RSpec.describe 'User Login' do
     user = create(:user)
     item = create(:item)
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-    
+
     visit item_path(item)
     click_button 'Add To Cart'
     click_link 'Log Out'
