@@ -26,6 +26,10 @@ class Item <ApplicationRecord
   end
 
   def convert_price
-    price.to_s.insert(-3, '.').to_f
+    price
+      .to_s
+      .rjust(2, '0')
+      .insert(-3, '.')
+      .to_f
   end
 end

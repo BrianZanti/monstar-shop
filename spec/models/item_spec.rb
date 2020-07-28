@@ -33,8 +33,26 @@ describe Item, type: :model do
       @review_5 = @chain.reviews.create(title: "Okay place :/", content: "Brian's cool and all but just an okay selection of items", rating: 3)
     end
 
-    it 'convert_price' do
-      expect(@chain.convert_price).to eq(0.5)
+    describe '#convert_price' do
+      it 'converts a price to dollars' do
+        item = create(:item, price: 3579)
+        expect(item.convert_price).to eq(35.79)
+      end
+
+      it 'can convert a price with 3 digits' do
+        item = create(:item, price: 101)
+        expect(item.convert_price).to eq(1.01)
+      end
+
+      it 'can convert a price with 2 digits' do
+        item = create(:item, price: 50)
+        expect(item.convert_price).to eq(0.5)
+      end
+
+      it 'can convert a price with 1 digit' do
+        item = create(:item, price: 2)
+        expect(item.convert_price).to eq(0.02)
+      end
     end
 
     it "calculate average review" do
