@@ -7,7 +7,11 @@ describe Item, type: :model do
     it { should validate_presence_of :price }
     it { should validate_presence_of :image }
     it { should validate_presence_of :inventory }
-    it { should validate_inclusion_of(:active?).in_array([true,false]) }
+    it 'should default to active' do
+      merchant = create(:merchant)
+      item = merchant.items.create(name: 'Itemy item', description: 'It is a very good item', price: 430, image: 'https://image.shutterstock.com/image-vector/online-shopping-ecommerce-concept-business-600w-525331675.jpg', inventory: 364)
+      expect(item.active?).to eq(true)
+    end
   end
 
   describe "relationships" do

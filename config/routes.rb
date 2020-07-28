@@ -35,6 +35,10 @@ Rails.application.routes.draw do
   post "/orders", to: "orders#create"
   get "/orders/:id", to: "orders#show"
 
+  get '/register', to: 'users#new'
+
+  resource :users, only: [:create]
+
   namespace :merchant do
     get '/', to: 'dashboard#show'
   end
