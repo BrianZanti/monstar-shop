@@ -6,7 +6,7 @@
   <%= f.label :city %>
   <%= f.text_field :city %>
   <%= f.label :state %>
-  <%= f.select :state, us_states %>
+  <%= f.select :state, us_states, include_blank: true %>
   <%= f.label :zip %>
   <%= f.number_field :zip %>
   <%= f.label :email %>
