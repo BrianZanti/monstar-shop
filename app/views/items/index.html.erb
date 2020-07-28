@@ -8,12 +8,12 @@
   <% @items.each do |item| %>
     <section class = "grid-item" id= 'item-<%=item.id%>'>
       <h2> <%=link_to item.name, "/items/#{item.id}" %> </h2>
-      <p>Sold by: <%=link_to item.merchant.name, "/merchants/#{item.merchant.id}" %></p>
+      <p>Sold by: <%= link_to item.merchant.name, "/merchants/#{item.merchant.id}" %></p>
       <a class="item-image" href=<%= item_path(item) %>>
         <%= image_tag item.image %>
       </a>
-      <p> <%= item.description unless @merchant%> </p>
-      <p>Price: <%= number_to_currency(item.price) %> </p>
+      <p> <%= item.description unless @merchant %> </p>
+      <p>Price: <%= number_to_currency(item.convert_price) %> </p>
       <p>Inventory: <%= item.inventory %> </p>
       <% if !@merchant %>
       <% end %>
