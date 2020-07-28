@@ -37,4 +37,20 @@ RSpec.describe "User Registration" do
     expect(page).to have_content('Password can\'t be blank')
   end
 
+  it 'cannot register a user with mismatched passwords' do
+    visit register_path
+
+    fill_in :user_name, with: 'User McUserton'
+    fill_in :user_address, with: "253 User ln."
+    fill_in :user_city, with: "Userville"
+    select "Utah", from: :user_state
+    fill_in :user_zip, with: "83920"
+    fill_in :user_email, with: "user.mcuserton@gmail.com"
+
+    fill_in :user_password, with: "123password"
+    fill_in :user_password_confirmation, with: "a completely different password"
+    click_button "Register"
+
+    expect(page).to have_content("Password confirmation doesn't match Password")
+  end
 end
