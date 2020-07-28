@@ -17,6 +17,15 @@ RSpec.describe 'User Login' do
       expect(current_path).to eq(profile_path)
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
     end
+
+    it 'redirects if the user is already logged in' do
+      user = create(:user)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+      visit login_path
+
+      expect(current_path).to eq(profile_path)
+      expect(page).to have_content("You are already logged in.")
+    end
   end
 
   describe 'as an Admin' do
@@ -35,6 +44,15 @@ RSpec.describe 'User Login' do
       expect(current_path).to eq(admin_path)
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
     end
+
+    it 'redirects if the admin is already logged in' do
+      user = create(:admin)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+      visit login_path
+
+      expect(current_path).to eq(admin_path)
+      expect(page).to have_content("You are already logged in.")
+    end
   end
 
   describe 'as a Merchant Employee' do
@@ -52,6 +70,15 @@ RSpec.describe 'User Login' do
 
       expect(current_path).to eq(merchant_path)
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
+    end
+
+    it 'redirects if the merchant is already logged in' do
+      user = create(:merchant_employee)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+      visit login_path
+
+      expect(current_path).to eq(merchant_path)
+      expect(page).to have_content("You are already logged in.")
     end
   end
 
