@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :merchant do
-    name { "Merchanty Merchant"}
-    address { "623 merchant lane" }
-    city { "Merchantsville"}
-    state { "MA" }
-    zip { 62348 }
+    name { Faker::Company.name }
+    address { Faker::Address.street_address }
+    city { Faker::Address.city }
+    state { Faker::Address.state }
+    zip  { Faker::Address.zip }
   end
 end

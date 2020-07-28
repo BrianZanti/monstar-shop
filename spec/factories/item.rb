@@ -1,10 +1,14 @@
 FactoryBot.define do
   factory :item do
     merchant
-    name { 'Itemy item' }
-    description { 'It is a very good item' }
-    price { 430 }
-    image { 'https://image.shutterstock.com/image-vector/online-shopping-ecommerce-concept-business-600w-525331675.jpg' }
-    inventory { 364 }
+    name { Faker::Commerce.product_name }
+    description { Faker::Lorem.sentence }
+    price { Faker::Number.within(range: 100..10000) }
+    image { Faker::LoremFlickr.image }
+    inventory { Faker::Number.within(range: 1..10000) }
+
+    factory :inactive_item do
+      active? { false }
+    end
   end
 end
