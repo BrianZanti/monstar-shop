@@ -54,4 +54,28 @@ RSpec.describe 'User Login' do
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
     end
   end
+
+  it 'cannot log in with incorrect password' do
+    user = create(:user)
+
+    visit login_path
+
+    fill_in :email, with: user.email
+    fill_in :password, with: 'incorrect'
+    click_button 'Login'
+
+    expect(page).to have_css('#login-form')
+    expect(page).to have_content("Invalid email or password.")
+  end
+
+  it 'cannot log in with an unknown email' do
+    visit login_path
+
+    fill_in :email, with: 'unknown@gmail.com'
+    fill_in :password, with: 'password'
+    click_button 'Login'
+
+    expect(page).to have_css('#login-form')
+    expect(page).to have_content("Invalid email or password.")
+  end
 end
