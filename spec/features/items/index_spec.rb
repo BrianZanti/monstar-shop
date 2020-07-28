@@ -5,38 +5,45 @@ RSpec.describe "Items Index Page" do
 
   describe "When I visit the items index page" do
     before(:each) do
-      # @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
-      @brian = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
-
-      # @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
-      # @tube = @meg.items.create(active?: false, name: "Tube", description: "Fill em Up!", price: 404, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 687)
-      @tire = create(:item)
-      @tube = create(:inactive_item)
-
-      @pull_toy = @brian.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
-      @dog_bone = @brian.items.create(active?: false, name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", inventory: 21)
+      @item_1 = create(:item)
+      @item_2 = create(:item)
+      @inactive_item_1 = create(:inactive_item)
+      @inactive_item_2 = create(:inactive_item)
     end
 
     it "all items or merchant names are links" do
       visit '/items'
 
-      expect(page).to have_link(@tire.name)
-      expect(page).to have_link(@tire.merchant.name)
-      expect(page).to have_link(@pull_toy.name)
-      expect(page).to have_link(@pull_toy.merchant.name)
+      click_link @item_1.name
+      expect(current_path).to eq(item_path(@item_1))
+
+      visit '/items'
+
+      click_link @item_1.merchant.name
+      expect(current_path).to eq(merchant_path(@item_1.merchant))
+
+      visit '/items'
+
+      click_link @item_2.name
+      expect(current_path).to eq(item_path(@item_2))
+
+      visit '/items'
+
+      click_link @item_2.merchant.name
+      expect(current_path).to eq(merchant_path(@item_2.merchant))
     end
 
     it 'all item images are links' do
       visit '/items'
-      within "#item-#{@pull_toy.id}" do
+      within "#item-#{@item_2.id}" do
         find('.item-image').click
-        expect(current_path).to eq(item_path(@pull_toy))
+        expect(current_path).to eq(item_path(@item_2))
       end
 
       visit '/items'
-      within "#item-#{@tire.id}" do
+      within "#item-#{@item_1.id}" do
         find('.item-image').click
-        expect(current_path).to eq(item_path(@tire))
+        expect(current_path).to eq(item_path(@item_1))
       end
     end
 
@@ -44,32 +51,32 @@ RSpec.describe "Items Index Page" do
 
       visit '/items'
 
-      within "#item-#{@tire.id}" do
-        expect(page).to have_link(@tire.name)
-        expect(page).to have_content(@tire.description)
-        expect(page).to have_content("Price: #{number_to_currency(@tire.convert_price)}")
+      within "#item-#{@item_1.id}" do
+        expect(page).to have_link(@item_1.name)
+        expect(page).to have_content(@item_1.description)
+        expect(page).to have_content("Price: #{number_to_currency(@item_1.convert_price)}")
         expect(page).to have_content("Active")
-        expect(page).to have_content("Inventory: #{@tire.inventory}")
-        expect(page).to have_link(@tire.merchant.name)
-        expect(page).to have_css("img[src*='#{@tire.image}']")
+        expect(page).to have_content("Inventory: #{@item_1.inventory}")
+        expect(page).to have_link(@item_1.merchant.name)
+        expect(page).to have_css("img[src*='#{@item_1.image}']")
       end
 
-      within "#item-#{@pull_toy.id}" do
-        expect(page).to have_link(@pull_toy.name)
-        expect(page).to have_content(@pull_toy.description)
-        expect(page).to have_content("Price: #{number_to_currency(@pull_toy.convert_price)}")
+      within "#item-#{@item_2.id}" do
+        expect(page).to have_link(@item_2.name)
+        expect(page).to have_content(@item_2.description)
+        expect(page).to have_content("Price: #{number_to_currency(@item_2.convert_price)}")
         expect(page).to have_content("Active")
-        expect(page).to have_content("Inventory: #{@pull_toy.inventory}")
-        expect(page).to have_link(@brian.name)
-        expect(page).to have_css("img[src*='#{@pull_toy.image}']")
+        expect(page).to have_content("Inventory: #{@item_2.inventory}")
+        expect(page).to have_link(@item_2.merchant.name)
+        expect(page).to have_css("img[src*='#{@item_2.image}']")
       end
     end
 
     it 'does not show disabled items' do
       visit '/items'
 
-      expect(page).to_not have_css("#item-#{@dog_bone.id}")
-      expect(page).to_not have_css("#item-#{@tube.id}")
+      expect(page).to_not have_css("#item-#{@inactive_item_1.id}")
+      expect(page).to_not have_css("#item-#{@inactive_item_2.id}")
     end
   end
 end
