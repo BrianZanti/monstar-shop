@@ -25,4 +25,7 @@ class Item <ApplicationRecord
     item_orders.empty?
   end
 
+  def convert_price
+    price.to_s.insert(-3, '.').to_f
+  end
 end
