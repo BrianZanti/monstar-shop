@@ -2,7 +2,7 @@
   <%= link_to "Monstar Shop", root_path %>
   <%= link_to "All Merchants", "/merchants"%>
   <%= link_to "All Items", "/items"%>
-  <%= link_to "Login" unless current_user %>
+  <%= link_to "Login", login_path unless current_user %>
   <%= link_to "Register", register_path unless current_user %>
   <%= link_to "Cart: #{cart.total_items}", "/cart" unless current_admin? %>
   <%= link_to "Log Out" if current_user %>
