@@ -23,6 +23,20 @@ RSpec.describe "Items Index Page" do
       expect(page).to have_link(@dog_bone.merchant.name)
     end
 
+    it 'all item images are links' do
+      visit '/items'
+      within "#item-#{@pull_toy.id}" do
+        find('.item-image').click
+        expect(current_path).to eq(item_path(@pull_toy))
+      end
+
+      visit '/items'
+      within "#item-#{@dog_bone.id}" do
+        find('.item-image').click
+        expect(current_path).to eq(item_path(@dog_bone))
+      end
+    end
+
     it "I can see a list of all of the items "do
 
       visit '/items'
