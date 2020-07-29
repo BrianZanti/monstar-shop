@@ -22,3 +22,5 @@ inactive_item_1 = create(:inactive_item)
 inactive_item_2 = create(:inactive_item)
 create_list(:item_order, 10, item: inactive_item_1, quantity: 10000)
 create_list(:item_order, 10, item: inactive_item_2, quantity: 10000)
+
+user_1 = create(:user, email: 'user@gmail.com', password: 'password')
