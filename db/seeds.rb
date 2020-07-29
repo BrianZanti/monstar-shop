@@ -24,3 +24,5 @@ create_list(:item_order, 10, item: inactive_item_1, quantity: 10000)
 create_list(:item_order, 10, item: inactive_item_2, quantity: 10000)
 
 user_1 = create(:user, email: 'user@gmail.com', password: 'password')
+merchant_1 = create(:merchant_employee, email: 'merchant@gmail.com', password: 'password')
+admin_1 = create(:admin, email: 'admin@gmail.com', password: 'password')
