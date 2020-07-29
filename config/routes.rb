@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
   resources :orders, only: [:new, :create, :show]
 
-  resources :users, only: [:create]
   get '/register', to: 'users#new'
 
   post "/cart/:item_id", to: "cart#add_item"
@@ -34,7 +33,12 @@ Rails.application.routes.draw do
     get '/', to: 'dashboard#show'
   end
 
-  scope module: :user do
-    get '/profile', to: 'users#show'
+  resources :users, only: [:create]
+  get '/profile', to: 'user/users#show'
+  namespace :user do
+    get '/edit', to: 'users#edit'
+    patch '/', to: 'users#update'
+    get '/password/edit', to: 'password#edit'
+    patch '/password', to: 'password#update'
   end
 end

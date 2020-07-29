@@ -1,0 +1,7 @@
+<%= form_tag '/user/password', method: :patch do %>
+  <%= label_tag :password %>
+  <%= password_field_tag :password %>
+  <%= label_tag :password_confirmation %>
+  <%= password_field_tag :password_confirmation %>
+  <%= submit_tag 'Update Password' %>
+<% end %>
