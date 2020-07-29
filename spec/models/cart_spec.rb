@@ -14,14 +14,14 @@ RSpec.describe Cart do
         })
     end
 
-    it '.contents' do
+    it '#contents' do
       expect(@cart.contents).to eq({
         @ogre.id.to_s => 1,
         @giant.id.to_s => 2
         })
     end
 
-    it '.add_item()' do
+    it '#add_item()' do
       @cart.add_item(@hippo.id.to_s)
 
       expect(@cart.contents).to eq({
@@ -31,19 +31,43 @@ RSpec.describe Cart do
         })
     end
 
-    it '.total_items' do
+    describe '#decrement_item' do
+      it 'can decrement the count' do
+        expect {
+          @cart.decrement_item(@giant.id.to_s)
+        }.to change { @cart.count_of(@giant.id.to_s) }.by(-1)
+      end
+
+      it 'will remove an item if its count goes to 0' do
+        @cart.decrement_item(@giant.id.to_s)
+        @cart.decrement_item(@giant.id.to_s)
+        expect(@cart.count_of(@giant.id.to_s)).to eq(0)
+        item_present = @cart.items.any? do |item, quantity|
+          item.id == @giant.id
+        end
+        expect(item_present).to be(false)
+      end
+    end
+
+    it '#count_of' do
+      expect(@cart.count_of(@giant.id.to_s)).to eq(2)
+      expect(@cart.count_of(@ogre.id.to_s)).to eq(1)
+      expect(@cart.count_of("XYZ")).to eq(0)
+    end
+
+    it '#total_items' do
       expect(@cart.total_items).to eq(3)
     end
 
-    it '.items' do
+    it '#items' do
       expect(@cart.items).to eq({@ogre => 1, @giant => 2})
     end
 
-    it '.total' do
+    it '#total' do
       expect(@cart.total).to eq(1.20)
     end
 
-    it '.subtotal()' do
+    it '#subtotal()' do
       expect(@cart.subtotal(@ogre)).to eq(0.2)
       expect(@cart.subtotal(@giant)).to eq(1.0)
     end

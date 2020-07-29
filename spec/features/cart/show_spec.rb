@@ -101,6 +101,38 @@ RSpec.describe 'Cart show' do
 
         expect(page).to have_content("#{@item_1.name} does not have enough inventory to satisfy your request")
       end
+
+      it 'I can decrement items in my cart' do
+        visit cart_path
+
+        visit "/items/#{@item_1.id}"
+        click_on "Add To Cart"
+
+        visit "/items/#{@item_3.id}"
+        click_on "Add To Cart"
+
+        within "#cart-item-#{@item_1.id}" do
+          click_button '-'
+        end
+
+        expect(current_path).to eq(cart_path)
+
+        within "#cart-item-#{@item_3.id}" do
+          click_button '-'
+        end
+
+        expect(page).to have_content("Total: #{number_to_currency(@cart_total)}")
+        within "#cart-item-#{@item_1.id}" do
+          within '.quantity' do
+            expect(page).to have_content('1')
+          end
+        end
+        within "#cart-item-#{@item_3.id}" do
+          within '.quantity' do
+            expect(page).to have_content('1')
+          end
+        end
+      end
     end
   end
 

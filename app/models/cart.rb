@@ -5,6 +5,10 @@ class Cart
     @contents = contents
   end
 
+  def count_of(item_id)
+    @contents[item_id].to_i
+  end
+
   def add_item(item_id)
     @contents[item_id] = 0 if !@contents[item_id]
     current_quantity = @contents[item_id]
@@ -15,6 +19,11 @@ class Cart
     else
       return false
     end
+  end
+
+  def decrement_item(item_id)
+    new_quantity = @contents[item_id] -= 1
+    @contents.delete(item_id) if new_quantity == 0
   end
 
   def total_items

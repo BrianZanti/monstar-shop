@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get '/register', to: 'users#new'
 
   post "/cart/:item_id", to: "cart#add_item"
+  post "/cart/:item_id/decrement", to: "cart#decrement_item"
   get "/cart", to: "cart#show"
   delete "/cart", to: "cart#empty"
   delete "/cart/:item_id", to: "cart#remove_item"

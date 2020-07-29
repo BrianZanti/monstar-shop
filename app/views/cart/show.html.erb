@@ -34,6 +34,7 @@
             <%= quantity %>
             <%= button_to '+', "/cart/#{item.id}", form_class: 'increment' %>
             <%= link_to "Remove", "/cart/#{item.id}",method: :delete %>
+            <%= button_to '-', "/cart/#{item.id}/decrement", form_class: 'decrement' %>
           </p>
         </center>
         </td>

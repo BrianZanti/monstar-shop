@@ -9,6 +9,11 @@ class CartController < ApplicationController
     redirect_to cart_path
   end
 
+  def decrement_item
+    cart.decrement_item(params[:item_id])
+    redirect_to cart_path
+  end
+
   def show
     render file: "#{Rails.root}/public/404.html", status: 404 if current_admin?
     @items = cart.items
