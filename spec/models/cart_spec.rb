@@ -40,12 +40,12 @@ RSpec.describe Cart do
     end
 
     it '.total' do
-      expect(@cart.total).to eq(120)
+      expect(@cart.total).to eq(1.20)
     end
 
     it '.subtotal()' do
-      expect(@cart.subtotal(@ogre)).to eq(20)
-      expect(@cart.subtotal(@giant)).to eq(100)
+      expect(@cart.subtotal(@ogre)).to eq(0.2)
+      expect(@cart.subtotal(@giant)).to eq(1.0)
     end
   end
 end

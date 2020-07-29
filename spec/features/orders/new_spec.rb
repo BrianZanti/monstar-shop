@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe("New Order Page") do
   describe "When I check out from my cart" do
     before(:each) do
@@ -15,6 +17,8 @@ RSpec.describe("New Order Page") do
       click_on "Add To Cart"
       visit "/items/#{@pencil.id}"
       click_on "Add To Cart"
+
+      @cart_total = @paper.convert_price * 2 + @tire.convert_price + @pencil.convert_price
     end
     it "I see all the information about my current cart" do
       visit "/cart"
@@ -24,28 +28,34 @@ RSpec.describe("New Order Page") do
       within "#order-item-#{@tire.id}" do
         expect(page).to have_link(@tire.name)
         expect(page).to have_link("#{@tire.merchant.name}")
-        expect(page).to have_content("$#{@tire.price}")
-        expect(page).to have_content("1")
-        expect(page).to have_content("$100")
+        within '.quantity' do
+          expect(page).to have_content("1")
+        end
+        expect(page).to have_content(number_to_currency(@tire.convert_price))
+        expect(page).to have_content(number_to_currency(@tire.convert_price))
       end
 
       within "#order-item-#{@paper.id}" do
         expect(page).to have_link(@paper.name)
         expect(page).to have_link("#{@paper.merchant.name}")
-        expect(page).to have_content("$#{@paper.price}")
-        expect(page).to have_content("2")
-        expect(page).to have_content("$40")
+        within '.quantity' do
+          expect(page).to have_content("2")
+        end
+        expect(page).to have_content(number_to_currency(@paper.convert_price))
+        expect(page).to have_content(number_to_currency(@paper.convert_price * 2))
       end
 
       within "#order-item-#{@pencil.id}" do
         expect(page).to have_link(@pencil.name)
         expect(page).to have_link("#{@pencil.merchant.name}")
-        expect(page).to have_content("$#{@pencil.price}")
-        expect(page).to have_content("1")
-        expect(page).to have_content("$2")
+        within '.quantity' do
+          expect(page).to have_content("1")
+        end
+        expect(page).to have_content(number_to_currency(@pencil.convert_price))
+        expect(page).to have_content(number_to_currency(@pencil.convert_price))
       end
 
-      expect(page).to have_content("Total: $142")
+      expect(page).to have_content("Total: #{number_to_currency(@cart_total)}")
     end
 
     it "I see a form where I can enter my shipping info" do

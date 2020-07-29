@@ -5,9 +5,16 @@ class Cart
     @contents = contents
   end
 
-  def add_item(item)
-    @contents[item] = 0 if !@contents[item]
-    @contents[item] += 1
+  def add_item(item_id)
+    @contents[item_id] = 0 if !@contents[item_id]
+    current_quantity = @contents[item_id]
+    item = Item.find(item_id)
+    if item.inventory > current_quantity
+      @contents[item_id] += 1
+      return true
+    else
+      return false
+    end
   end
 
   def total_items
