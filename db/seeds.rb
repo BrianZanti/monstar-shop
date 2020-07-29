@@ -1,21 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+include FactoryBot::Syntax::Methods
 
-Merchant.destroy_all
+ItemOrder.destroy_all
+Order.destroy_all
+Review.destroy_all
 Item.destroy_all
+Merchant.destroy_all
+User.destroy_all
 
-#merchants
-bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
-dog_shop = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
+items = create_list(:item, 8)
 
-#bike_shop items
-tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+item_orders_0 = create_list(:item_order, 2, item: items[0])
+item_orders_1 = create_list(:item_order, 4, item: items[1])
+item_orders_2 = create_list(:item_order, 8, item: items[2])
+item_orders_3 = create_list(:item_order, 10, item: items[3])
+item_orders_4 = create_list(:item_order, 1, item: items[4])
+item_orders_5 = create_list(:item_order, 0, item: items[5])
+item_orders_6 = create_list(:item_order, 3, item: items[6])
+item_orders_7 = create_list(:item_order, 2, item: items[7])
 
-#dog_shop items
-pull_toy = dog_shop.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
-dog_bone = dog_shop.items.create(name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", active?:false, inventory: 21)
+inactive_item_1 = create(:inactive_item)
+inactive_item_2 = create(:inactive_item)
+create_list(:item_order, 10, item: inactive_item_1, quantity: 10000)
+create_list(:item_order, 10, item: inactive_item_2, quantity: 10000)
