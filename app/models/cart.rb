@@ -3,18 +3,17 @@ class Cart
 
   def initialize(contents)
     @contents = contents
+    @contents.default = 0
   end
 
   def count_of(item_id)
-    @contents[item_id].to_i
+    @contents[item_id.to_s]
   end
 
   def add_item(item_id)
-    @contents[item_id] = 0 if !@contents[item_id]
-    current_quantity = @contents[item_id]
     item = Item.find(item_id)
-    if item.inventory > current_quantity
-      @contents[item_id] += 1
+    if item.inventory > count_of(item_id)
+      @contents[item_id.to_s] += 1
       return true
     else
       return false
@@ -22,8 +21,8 @@ class Cart
   end
 
   def decrement_item(item_id)
-    new_quantity = @contents[item_id] -= 1
-    @contents.delete(item_id) if new_quantity == 0
+    new_quantity = @contents[item_id.to_s] -= 1
+    @contents.delete(item_id.to_s) if new_quantity == 0
   end
 
   def total_items
