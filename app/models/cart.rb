@@ -30,11 +30,12 @@ class Cart
   end
 
   def items
-    item_quantity = {}
-    @contents.each do |item_id,quantity|
-      item_quantity[Item.find(item_id)] = quantity
+    items = Item.where(id: @contents.keys)
+    @contents.inject({}) do |item_quantity, (item_id, quantity)|
+      item = items.find {|item| item.id.to_s == item_id}
+      item_quantity[item] = quantity
+      item_quantity
     end
-    item_quantity
   end
 
   def subtotal(item)
@@ -42,8 +43,8 @@ class Cart
   end
 
   def total
-    @contents.sum do |item_id,quantity|
-      Item.find(item_id).convert_price * quantity
+    items.sum do |item, quantity|
+      item.convert_price * quantity
     end
   end
 
