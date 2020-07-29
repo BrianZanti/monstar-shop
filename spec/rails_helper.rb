@@ -70,4 +70,6 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
+
+  include ActionView::Helpers::NumberHelper
 end

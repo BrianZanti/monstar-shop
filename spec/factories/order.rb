@@ -1,5 +1,6 @@
 FactoryBot.define do
-  factory :merchant do
+  factory :order do
+    user
     name { Faker::Company.name }
     address { Faker::Address.street_address }
     city { Faker::Address.city }

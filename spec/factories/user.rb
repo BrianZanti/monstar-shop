@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :user do
-    name { "Daffy Duck" }
-    address { "123 Walt Disney dr."}
-    city { "Orlando"}
-    state { "Florida"}
-    zip  {"32825"}
-    email  { "daffy.duck@gamil.com" }
+    name { Faker::Name.name }
+    address { Faker::Address.street_address }
+    city { Faker::Address.city }
+    state { Faker::Address.state }
+    zip  { Faker::Address.zip }
+    email  { Faker::Internet.email }
     password { 'password' }
 
     factory :merchant_employee do

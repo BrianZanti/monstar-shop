@@ -25,4 +25,20 @@ class Item <ApplicationRecord
     item_orders.empty?
   end
 
+  def convert_price
+    price
+      .to_s
+      .rjust(2, '0')
+      .insert(-3, '.')
+      .to_f
+  end
+
+  def self.by_quantity_sold(direction: 'desc', limit: 5)
+    left_joins(:item_orders)
+      .select('items.*, sum(COALESCE(quantity, 0)) as quantity_sold')
+      .where(active?: true)
+      .group(:id)
+      .order("quantity_sold #{direction}")
+      .limit(limit)
+  end
 end
