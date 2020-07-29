@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Items Index Page" do
-  include ActionView::Helpers::NumberHelper
-
   describe "When I visit the items index page" do
     before(:each) do
       @item_1 = create(:item)

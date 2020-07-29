@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Merchant Items Index Page" do
-  include ActionView::Helpers::NumberHelper
-
   describe "When I visit the merchant items page" do
     before(:each) do
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
