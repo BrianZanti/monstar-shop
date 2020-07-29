@@ -31,4 +31,34 @@ RSpec.describe "User Profile Page" do
     expect(find('#user_zip').value).to eq(@user.zip)
     expect(find('#user_email').value).to eq(@user.email)
   end
+
+  it 'can edit user info' do
+    visit user_edit_path
+
+    new_name = "User McUserton"
+    new_address = "123 user ln."
+    new_city = "Usersville"
+    new_state = "Utah"
+    new_zip = "65401"
+    new_email = "user.mcuserton@gmail.com"
+
+    fill_in :user_name, with: new_name
+    fill_in :user_address, with: new_address
+    fill_in :user_city, with: new_city
+    select new_state, from: :user_state
+    fill_in :user_zip, with: new_zip
+    fill_in :user_email, with: new_email
+
+    click_button 'Update Profile'
+
+    expect(current_path).to eq(profile_path)
+    expect(page).to have_content("Your profile has been updated.")
+
+    expect(page).to have_content(new_name)
+    expect(page).to have_content(new_address)
+    expect(page).to have_content(new_city)
+    expect(page).to have_content(new_state)
+    expect(page).to have_content(new_zip)
+    expect(page).to have_content(new_email)
+  end
 end
