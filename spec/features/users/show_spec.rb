@@ -82,4 +82,13 @@ RSpec.describe "User Profile Page" do
     click_button 'Login'
     expect(page).to have_content('you are now logged in.')
   end
+
+  it 'does not change password if it doesnt match the confirmation' do
+    visit profile_path
+    click_link "Edit Password"
+    fill_in :password, with: 'new password'
+    fill_in :password_confirmation, with: 'different password'
+    click_button 'Update Password'
+    expect(page).to have_content("Password confirmation doesn't match Password")
+  end
 end
