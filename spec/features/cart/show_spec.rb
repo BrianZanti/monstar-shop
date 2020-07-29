@@ -4,9 +4,6 @@ RSpec.describe 'Cart show' do
   describe 'When I have added items to my cart' do
     describe 'and visit my cart path' do
       before(:each) do
-        @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
-        @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
-
         @item_1 = create(:item)
         @item_2 = create(:item)
         @item_3 = create(:item)
@@ -62,7 +59,7 @@ RSpec.describe 'Cart show' do
       end
     end
   end
-  
+
   describe "When I haven't added anything to my cart" do
     describe "and visit my cart show page" do
       it "I see a message saying my cart is empty" do
@@ -75,7 +72,6 @@ RSpec.describe 'Cart show' do
         visit '/cart'
         expect(page).to_not have_link("Empty Cart")
       end
-
     end
   end
 end
