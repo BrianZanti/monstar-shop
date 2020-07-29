@@ -32,7 +32,7 @@ RSpec.describe "User Profile Page" do
     expect(find('#user_email').value).to eq(@user.email)
   end
 
-  it 'can edit user info' do
+  it 'can edit profile info' do
     visit user_edit_path
 
     new_name = "User McUserton"
@@ -60,5 +60,26 @@ RSpec.describe "User Profile Page" do
     expect(page).to have_content(new_state)
     expect(page).to have_content(new_zip)
     expect(page).to have_content(new_email)
+  end
+
+  it 'can edit their password' do
+    new_password = 'new password'
+
+    visit profile_path
+    click_link "Edit Password"
+    fill_in :password, with: new_password
+    fill_in :password_confirmation, with: 'new password'
+    click_button 'Update Password'
+
+    expect(current_path).to eq(profile_path)
+    expect(page).to have_content('Your password has been updated.')
+
+    click_link('Log Out')
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_call_original
+    visit login_path
+    fill_in :email, with: @user.email
+    fill_in :password, with: new_password
+    click_button 'Login'
+    expect(page).to have_content('you are now logged in.')
   end
 end

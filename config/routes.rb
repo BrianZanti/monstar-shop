@@ -34,9 +34,11 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:create]
-  scope module: :user do
-    get '/profile', to: 'users#show'
-    get '/user/edit', to: 'users#edit'
-    patch '/user', to: 'users#update'
+  get '/profile', to: 'user/users#show'
+  namespace :user do
+    get '/edit', to: 'users#edit'
+    patch '/', to: 'users#update'
+    get '/password/edit', to: 'password#edit'
+    patch '/password', to: 'password#update'
   end
 end
