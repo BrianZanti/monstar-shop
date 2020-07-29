@@ -7,6 +7,8 @@ class ItemsController<ApplicationController
     else
       @items = Item.where(active?: true)
     end
+    @top_five = Item.by_quantity_sold
+    @bottom_five = Item.by_quantity_sold(direction: 'asc')
   end
 
   def show

@@ -77,49 +77,58 @@ describe Item, type: :model do
 
   describe 'class methods' do
     describe '.by_quantity_sold' do
-      before :each do
-        @items = create_list(:item, 8)
+      describe 'with sufficient data' do
+        before :each do
+          @items = create_list(:item, 8)
 
-        @item_orders_0 = create_list(:item_order, 2, item: @items[0])
-        @item_orders_1 = create_list(:item_order, 4, item: @items[1])
-        @item_orders_2 = create_list(:item_order, 8, item: @items[2])
-        @item_orders_3 = create_list(:item_order, 10, item: @items[3])
-        @item_orders_4 = create_list(:item_order, 1, item: @items[4])
-        @item_orders_5 = create_list(:item_order, 0, item: @items[5])
-        @item_orders_6 = create_list(:item_order, 3, item: @items[6])
-        @item_orders_7 = create_list(:item_order, 2, item: @items[7])
+          @item_orders_0 = create_list(:item_order, 2, item: @items[0])
+          @item_orders_1 = create_list(:item_order, 4, item: @items[1])
+          @item_orders_2 = create_list(:item_order, 8, item: @items[2])
+          @item_orders_3 = create_list(:item_order, 10, item: @items[3])
+          @item_orders_4 = create_list(:item_order, 1, item: @items[4])
+          @item_orders_5 = create_list(:item_order, 0, item: @items[5])
+          @item_orders_6 = create_list(:item_order, 3, item: @items[6])
+          @item_orders_7 = create_list(:item_order, 2, item: @items[7])
 
-        inactive_item_1 = create(:inactive_item)
-        inactive_item_2 = create(:inactive_item)
-        create_list(:item_order, 10, item: inactive_item_1, quantity: 10000)
-        create_list(:item_order, 10, item: inactive_item_2, quantity: 10000)
-      end
-
-      it 'finds the top five by default' do
-        expected_items = @items.sort_by do |item|
-          item.item_orders.sum do |item_order|
-            -1 * item_order.quantity
-          end
+          inactive_item_1 = create(:inactive_item)
+          inactive_item_2 = create(:inactive_item)
+          create_list(:item_order, 10, item: inactive_item_1, quantity: 10000)
+          create_list(:item_order, 10, item: inactive_item_2, quantity: 10000)
         end
-        expect(Item.by_quantity_sold).to eq(expected_items.first(5))
-      end
 
-      it 'can find the bottom five' do
-        expected_items = @items.sort_by do |item|
-          item.item_orders.sum do |item_order|
-            item_order.quantity
+        it 'finds the top five by default' do
+          expected_items = @items.sort_by do |item|
+            item.item_orders.sum do |item_order|
+              -1 * item_order.quantity
+            end
           end
+          expect(Item.by_quantity_sold).to eq(expected_items.first(5))
         end
-        expect(Item.by_quantity_sold(direction: 'asc')).to eq(expected_items.first(5))
-      end
 
-      it 'can find the bottom 3' do
-        expected_items = @items.sort_by do |item|
-          item.item_orders.sum do |item_order|
-            item_order.quantity
+        it 'can find the bottom five' do
+          expected_items = @items.sort_by do |item|
+            item.item_orders.sum do |item_order|
+              item_order.quantity
+            end
           end
+          expect(Item.by_quantity_sold(direction: 'asc')).to eq(expected_items.first(5))
         end
-        expect(Item.by_quantity_sold(direction: 'asc', limit: 3)).to eq(expected_items.first(3))
+
+        it 'can find the bottom 3' do
+          expected_items = @items.sort_by do |item|
+            item.item_orders.sum do |item_order|
+              item_order.quantity
+            end
+          end
+          expect(Item.by_quantity_sold(direction: 'asc', limit: 3)).to eq(expected_items.first(3))
+        end
+      end
+      describe 'without sufficient data' do
+        it 'can return fewer items than requested' do
+          item = create(:item)
+          expect(Item.by_quantity_sold).to eq([item])
+          expect(Item.by_quantity_sold(direction: 'asc', limit: 3)).to eq([item])
+        end
       end
     end
   end

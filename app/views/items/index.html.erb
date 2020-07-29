@@ -4,7 +4,7 @@
 <% else %>
   <h1>All Items</h1>
 <% end %>
-<section class="grid-container">
+<section class="grid-container" id="items">
   <% @items.each do |item| %>
     <section class = "grid-item" id= 'item-<%=item.id%>'>
       <h2> <%=link_to item.name, "/items/#{item.id}" %> </h2>
@@ -24,4 +24,20 @@
       <% end %>
     </section>
     <% end %>
+</section>
+<section id="statistics">
+  <h2>Most Popular Items:</h2>
+  <ol>
+    <% @top_five.each do |item| %>
+      <li><%= link_to item.name, item_path(item) %>, quantity sold: <%= number_to_human(item.quantity_sold) %></li>
+    <% end %>
+  </ol>
+
+  <h2>Least Popular Items:</h2>
+  <ol>
+    <% @bottom_five.each do |item| %>
+      <li><%= link_to item.name, item_path(item) %>, quantity sold: <%= number_to_human(item.quantity_sold) %></li>
+    <% end %>
+  </ol>
+
 </section>
