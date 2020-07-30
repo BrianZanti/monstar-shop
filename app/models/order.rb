@@ -8,6 +8,11 @@ class Order <ApplicationRecord
   enum status: [:pending, :packaged, :shipped, :cancelled]
 
   def grandtotal
-    item_orders.sum('price * quantity')
+    cents = item_orders.sum('price * quantity')
+    cents / 100.0
+  end
+
+  def total_quantity
+    item_orders.sum(:quantity)
   end
 end
