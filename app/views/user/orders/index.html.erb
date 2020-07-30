@@ -1,0 +1,5 @@
+<% @orders.each do |order| %>
+  <section id="order-<%= order.id %>">
+    <p>Order #<%= order.id %> - status: <%= order.status %> %></p>
+  </section>
+<% end %>
