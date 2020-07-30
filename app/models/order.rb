@@ -15,4 +15,9 @@ class Order <ApplicationRecord
   def total_quantity
     item_orders.sum(:quantity)
   end
+
+  def cancel
+    self.update(status: :cancelled)
+    item_orders.update(fulfilled?: false)
+  end
 end

@@ -7,6 +7,7 @@ RSpec.describe "Order show page" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
       @order = create(:order, user: user)
       create_list(:item_order, 3, order: @order)
+      create(:item_order, order: @order, fulfilled?: true)
     end
 
     it 'shows all order and item order details' do
@@ -34,6 +35,20 @@ RSpec.describe "Order show page" do
           end
           expect(page).to have_xpath("//img[@src='#{item_order.item.image}']")
         end
+      end
+    end
+
+    it 'can cancel an order' do
+      visit profile_order_path(@order)
+
+      click_button 'Cancel Order'
+
+      expect(current_path).to eq(profile_order_path(@order))
+
+      expect(page).to have_content("status: cancelled")
+
+      @order.item_orders.each do |item_order|
+        expect(item_order.fulfilled?).to be(false)
       end
     end
   end

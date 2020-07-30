@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get '/profile', to: 'user/users#show'
   get '/profile/orders', to: 'user/orders#index'
   get '/profile/orders/:id', to: 'user/orders#show', as: :profile_order
+  delete '/profile/orders/:id', to: 'user/orders#destroy'
 
   namespace :user do
     get '/edit', to: 'users#edit'
