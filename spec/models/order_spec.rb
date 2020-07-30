@@ -7,6 +7,13 @@ describe Order, type: :model do
     it { should validate_presence_of :city }
     it { should validate_presence_of :state }
     it { should validate_presence_of :zip }
+    it { should define_enum_for(:status)
+          .with_values([:pending, :packaged, :shipped, :cancelled])
+    }
+    it 'should default to pending status' do
+      order = Order.create(name: 'a', address: 'a', city: 'a', state: 'a', zip: '11111')
+      expect(order.pending?).to be(true)
+    end
   end
 
   describe "relationships" do
