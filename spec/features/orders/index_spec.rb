@@ -63,7 +63,13 @@ RSpec.describe "Orders Index" do
 
       click_link "Order ##{@order_1.id}"
 
-      expect(current_path).to eq(order_path(@order_1))
+      expect(current_path).to eq(profile_order_path(@order_1))
+
+      visit profile_orders_path
+
+      click_link "Order ##{@order_2.id}"
+
+      expect(current_path).to eq(profile_order_path(@order_2))
     end
   end
 end

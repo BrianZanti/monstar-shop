@@ -2,7 +2,7 @@
   <% @orders.each do |order| %>
     <tr>
       <section id="order-<%= order.id %>">
-        <td><%= link_to "Order ##{order.id}", order_path(order) %></td>
+        <td><%= link_to "Order ##{order.id}", profile_order_path(order) %></td>
         <td>status: <%= order.status %></td>
         <td>Created on <%= order.created_at %></td>
         <td>Last updated on <%= order.created_at %></td>
