@@ -1,9 +1,17 @@
 class CartController < ApplicationController
   def add_item
     item = Item.find(params[:item_id])
-    cart.add_item(item.id.to_s)
-    flash[:success] = "#{item.name} was successfully added to your cart"
-    redirect_to "/items"
+    if cart.add_item(item.id.to_s)
+      flash[:success] = "#{item.name} was successfully added to your cart"
+    else
+      flash[:error] = "#{item.name} does not have enough inventory to satisfy your request"
+    end
+    redirect_to cart_path
+  end
+
+  def decrement_item
+    cart.decrement_item(params[:item_id])
+    redirect_to cart_path
   end
 
   def show

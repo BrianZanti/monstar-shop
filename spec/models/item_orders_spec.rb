@@ -20,7 +20,29 @@ describe ItemOrder, type: :model do
       order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, user: create(:user))
       item_order_1 = order_1.item_orders.create!(item: tire, price: tire.price, quantity: 2)
 
-      expect(item_order_1.subtotal).to eq(200)
+      expect(item_order_1.subtotal).to eq(2.00)
+    end
+
+    describe '#convert_price' do
+      it 'converts a price to dollars' do
+        item_order = create(:item_order, price: 3579)
+        expect(item_order.convert_price).to eq(35.79)
+      end
+
+      it 'can convert a price with 3 digits' do
+        item_order = create(:item_order, price: 101)
+        expect(item_order.convert_price).to eq(1.01)
+      end
+
+      it 'can convert a price with 2 digits' do
+        item_order = create(:item_order, price: 50)
+        expect(item_order.convert_price).to eq(0.5)
+      end
+
+      it 'can convert a price with 1 digit' do
+        item_order = create(:item_order, price: 2)
+        expect(item_order.convert_price).to eq(0.02)
+      end
     end
   end
 

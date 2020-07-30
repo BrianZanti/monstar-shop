@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   get '/register', to: 'users#new'
 
   post "/cart/:item_id", to: "cart#add_item"
+  post "/cart/:item_id/decrement", to: "cart#decrement_item"
   get "/cart", to: "cart#show"
   delete "/cart", to: "cart#empty"
   delete "/cart/:item_id", to: "cart#remove_item"
@@ -35,6 +36,9 @@ Rails.application.routes.draw do
 
   resources :users, only: [:create]
   get '/profile', to: 'user/users#show'
+  get '/profile/orders', to: 'user/orders#index'
+  get '/profile/orders/:id', to: 'user/orders#show', as: :profile_order
+
   namespace :user do
     get '/edit', to: 'users#edit'
     patch '/', to: 'users#update'

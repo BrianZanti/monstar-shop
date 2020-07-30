@@ -3,11 +3,26 @@ class Cart
 
   def initialize(contents)
     @contents = contents
+    @contents.default = 0
   end
 
-  def add_item(item)
-    @contents[item] = 0 if !@contents[item]
-    @contents[item] += 1
+  def count_of(item_id)
+    @contents[item_id.to_s]
+  end
+
+  def add_item(item_id)
+    item = Item.find(item_id)
+    if item.inventory > count_of(item_id)
+      @contents[item_id.to_s] += 1
+      return true
+    else
+      return false
+    end
+  end
+
+  def decrement_item(item_id)
+    new_quantity = @contents[item_id.to_s] -= 1
+    @contents.delete(item_id.to_s) if new_quantity == 0
   end
 
   def total_items
@@ -15,20 +30,21 @@ class Cart
   end
 
   def items
-    item_quantity = {}
-    @contents.each do |item_id,quantity|
-      item_quantity[Item.find(item_id)] = quantity
+    items = Item.where(id: @contents.keys)
+    @contents.inject({}) do |item_quantity, (item_id, quantity)|
+      item = items.find {|item| item.id.to_s == item_id}
+      item_quantity[item] = quantity
+      item_quantity
     end
-    item_quantity
   end
 
   def subtotal(item)
-    item.price * @contents[item.id.to_s]
+    item.convert_price * @contents[item.id.to_s]
   end
 
   def total
-    @contents.sum do |item_id,quantity|
-      Item.find(item_id).price * quantity
+    items.sum do |item, quantity|
+      item.convert_price * quantity
     end
   end
 

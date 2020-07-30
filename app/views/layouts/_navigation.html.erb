@@ -7,7 +7,7 @@
   <%= link_to "Cart: #{cart.total_items}", "/cart" unless current_admin? %>
   <%= link_to "Log Out", logout_path if current_user %>
   <%= content_tag :p, "Logged In as #{current_user.name}" if current_user %>
-  <%= link_to "Profile" if current_user %>
+  <%= link_to "Profile", profile_path if current_user %>
   <%= link_to "Merchant Dashboard" if current_merchant? %>
   <%= link_to "Admin Dashboard" if current_admin? %>
   <%= link_to "Users" if current_admin? %>

@@ -17,15 +17,42 @@ RSpec.describe 'Cart show' do
       click_on "Add To Cart"
       @items_in_cart = [@paper,@tire,@pencil]
     end
+    describe 'as a user' do
+      before :each do
+        user = create(:user)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+      end
 
-    it 'Theres a link to checkout' do
-      visit "/cart"
+      it 'Theres a link to checkout' do
+        visit "/cart"
 
-      expect(page).to have_link("Checkout")
+        expect(page).to have_link("Checkout")
 
-      click_on "Checkout"
+        click_on "Checkout"
 
-      expect(current_path).to eq("/orders/new")
+        expect(current_path).to eq("/orders/new")
+      end
+    end
+
+    describe 'as a visitor' do
+      it 'requires me to login or register' do
+        visit cart_path
+
+        expect(page).to have_content("You must register or log in to check out.")
+
+        within '#checkout' do
+          click_link 'register'
+          expect(current_path).to eq(register_path)
+        end
+
+        visit cart_path
+
+        within '#checkout' do
+          click_link 'log in'
+          expect(current_path).to eq(login_path)
+        end
+
+      end
     end
   end
 
