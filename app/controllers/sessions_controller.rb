@@ -28,6 +28,6 @@ class SessionsController < ApplicationController
   def redirect_user
     redirect_to profile_path if current_user.default?
     redirect_to merchant_dashboard_path if current_user.merchant_employee?
-    redirect_to admin_path if current_user.admin?
+    redirect_to admin_dashboard_path if current_user.admin?
   end
 end

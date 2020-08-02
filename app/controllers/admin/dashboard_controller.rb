@@ -1,5 +1,5 @@
 class Admin::DashboardController < Admin::BaseController
   def show
-    @orders = Order.all
+    @facade = AdminDashboardFacade.new
   end
 end

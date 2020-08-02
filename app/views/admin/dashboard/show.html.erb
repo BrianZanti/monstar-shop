@@ -1,7 +1,45 @@
-<% @orders.each do |order| %>
-  <section id="order-<%= order.id %>">
-    <p>Order #<%= order.id %></p>
-    <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
-    <p>Created at: <%= order.created_at %></p>
-  </section>
-<% end %>
+<%= content_tag :p, "There are no orders in the system." if @facade.no_orders? %>
+
+<section id="pending-orders">
+  <h3>Pending Orders</h3>
+  <% @facade.pending_orders.each do |order| %>
+    <section id="order-<%= order.id %>">
+      <p>Order #<%= order.id %></p>
+      <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
+      <p>Created at: <%= order.created_at %></p>
+    </section>
+  <% end %>
+</section>
+
+<section id="packaged-orders">
+  <h3>Packaged Orders</h3>
+  <% @facade.packaged_orders.each do |order| %>
+    <section id="order-<%= order.id %>">
+      <p>Order #<%= order.id %></p>
+      <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
+      <p>Created at: <%= order.created_at %></p>
+    </section>
+  <% end %>
+</section>
+
+<section id="shipped-orders">
+  <h3>Shipped Orders</h3>
+  <% @facade.shipped_orders.each do |order| %>
+    <section id="order-<%= order.id %>">
+      <p>Order #<%= order.id %></p>
+      <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
+      <p>Created at: <%= order.created_at %></p>
+    </section>
+  <% end %>
+</section>
+
+<section id="cancelled-orders">
+  <h3>Cancelled Orders</h3>
+  <% @facade.cancelled_orders.each do |order| %>
+    <section id="order-<%= order.id %>">
+      <p>Order #<%= order.id %></p>
+      <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
+      <p>Created at: <%= order.created_at %></p>
+    </section>
+  <% end %>
+</section>

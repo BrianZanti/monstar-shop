@@ -29,7 +29,7 @@ RSpec.describe 'User Login' do
   end
 
   describe 'as an Admin' do
-    it 'can login with valid info and redirect to the Merchant Dashboard' do
+    it 'can login with valid info and redirect to the Admin Dashboard' do
       user = create(:admin)
 
       visit '/'
@@ -41,7 +41,7 @@ RSpec.describe 'User Login' do
       fill_in :password, with: user.password
       click_button 'Login'
 
-      expect(current_path).to eq(admin_path)
+      expect(current_path).to eq(admin_dashboard_path)
       expect(page).to have_content("Welcome #{user.name}, you are now logged in.")
     end
 
@@ -50,7 +50,7 @@ RSpec.describe 'User Login' do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
       visit login_path
 
-      expect(current_path).to eq(admin_path)
+      expect(current_path).to eq(admin_dashboard_path)
       expect(page).to have_content("You are already logged in.")
     end
   end
