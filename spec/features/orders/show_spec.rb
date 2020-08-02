@@ -51,5 +51,13 @@ RSpec.describe "Order show page" do
         expect(item_order.fulfilled?).to be(false)
       end
     end
+
+    it 'cannot cancel the order if it is shipped' do
+      order = create(:shipped_order)
+
+      visit profile_order_path(order)
+
+      expect(page).to_not have_button('Cancel Order')
+    end
   end
 end

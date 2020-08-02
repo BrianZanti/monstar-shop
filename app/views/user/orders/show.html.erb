@@ -1,4 +1,4 @@
-<%= button_to "Cancel Order", profile_order_path(@order), method: :delete %>
+<%= button_to "Cancel Order", profile_order_path(@order), method: :delete unless @order.shipped? %>
 
 <%= render partial: 'orders/order_info' %>
 

@@ -29,4 +29,8 @@ class Order <ApplicationRecord
       return false
     end
   end
+
+  def self.by_status
+    self.order(:status).includes(:user)
+  end
 end

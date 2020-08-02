@@ -76,4 +76,35 @@ describe Order, type: :model do
       end
     end
   end
+
+  describe 'class methods' do
+    describe '.by_status' do
+      it 'orders all orders by status' do
+        create(:shipped_order)
+        create_list(:packaged_order, 5)
+        create_list(:shipped_order, 2)
+        create(:cancelled_order)
+        create_list(:order, 5)
+        create_list(:packaged_order, 5)
+        create_list(:cancelled_order, 5)
+
+        pending = Order.by_status[0...5]
+        packaged = Order.by_status[5...15]
+        shipped = Order.by_status[15...18]
+        cancelled = Order.by_status[18..23]
+        pending.each do |pending_order|
+          expect(pending_order.status).to eq("pending")
+        end
+        packaged.each do |packaged_order|
+          expect(packaged_order.status).to eq("packaged")
+        end
+        shipped.each do |shipped_order|
+          expect(shipped_order.status).to eq("shipped")
+        end
+        cancelled.each do |cancelled_order|
+          expect(cancelled_order.status).to eq("cancelled")
+        end
+      end
+    end
+  end
 end
