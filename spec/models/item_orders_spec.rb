@@ -44,6 +44,21 @@ describe ItemOrder, type: :model do
         expect(item_order.convert_price).to eq(0.02)
       end
     end
+
+    describe '#fulfill' do
+      it 'changes filled? to true' do
+        item_order = create(:item_order)
+        expect(item_order.fulfilled?).to be(false)
+        item_order.fulfill
+        expect(item_order.fulfilled?).to be(true)
+      end
+
+      it 'should call check_fulfillment on the order' do
+        item_order = create(:item_order)
+        expect(item_order.order).to receive(:check_fulfillment)
+        item_order.fulfill
+      end
+    end
   end
 
 end
