@@ -36,13 +36,44 @@ describe Order, type: :model do
       @order_1.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
       @order_1.item_orders.create!(item: @pull_toy, price: @pull_toy.price, quantity: 3)
     end
-    
+
     it 'grandtotal' do
       expect(@order_1.grandtotal).to eq(2.30)
     end
 
     it 'total_quantity' do
       expect(@order_1.total_quantity).to eq(5)
+    end
+
+    describe '#check_fulfillment' do
+      it 'changes the order status to packaged if all item orders are fulfilled' do
+        order = create(:order)
+        create_list(:fulfilled_item_order, 3, order: order)
+        item_order = create(:item_order, order: order)
+        order.check_fulfillment
+        expect(order.packaged?).to be(false)
+        item_order.fulfill
+        order.check_fulfillment
+        expect(order.packaged?).to be(true)
+      end
+
+      it 'returns true if it changed the status' do
+        order = create(:order)
+        create_list(:fulfilled_item_order, 3, order: order)
+        item_order = create(:item_order, order: order)
+        expect(order.check_fulfillment).to be(false)
+        item_order.fulfill
+        expect(order.check_fulfillment).to be(true)
+      end
+
+      it 'does nothing if there are unfulfilled item_orders' do
+        order = create(:order)
+        create_list(:fulfilled_item_order, 3, order: order)
+        item_order = create(:item_order, order: order)
+        expect(order.packaged?).to be(false)
+        order.check_fulfillment
+        expect(order.packaged?).to be(false)
+      end
     end
   end
 end

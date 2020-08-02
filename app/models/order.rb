@@ -20,4 +20,13 @@ class Order <ApplicationRecord
     self.update(status: :cancelled)
     item_orders.update(fulfilled?: false)
   end
+
+  def check_fulfillment
+    if item_orders.where(fulfilled?: false).empty?
+      self.update(status: :packaged)
+      return true
+    else
+      return false
+    end
+  end
 end
