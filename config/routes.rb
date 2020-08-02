@@ -31,7 +31,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    get '/', to: 'dashboard#show'
+    get '/', to: 'dashboard#show', as: :dashboard
+    resources :users, only: :show
   end
 
   resources :users, only: [:create]

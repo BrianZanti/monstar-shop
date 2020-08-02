@@ -1,0 +1,7 @@
+<% @orders.each do |order| %>
+  <section id="order-<%= order.id %>">
+    <p>Order #<%= order.id %></p>
+    <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
+    <p>Created at: <%= order.created_at %></p>
+  </section>
+<% end %>
