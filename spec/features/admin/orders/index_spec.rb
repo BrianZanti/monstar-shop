@@ -64,6 +64,30 @@ RSpec.describe "Admin Dashboard" do
         end
       end
     end
+
+    it "can ship packaged orders" do
+      visit admin_dashboard_path
+
+      within '#packaged-orders' do
+        @packaged_orders.each do |order|
+          within "#order-#{order.id}" do
+            expect(page).to have_button('Ship Order')
+          end
+        end
+      end
+
+      packaged_order = @packaged_orders.first
+
+      within "#order-#{packaged_order.id}" do
+        click_button('Ship Order')
+      end
+
+      within '#shipped-orders' do
+        within "#order-#{packaged_order.id}" do
+          expect(page).to_not have_button('Ship Order')
+        end
+      end
+    end
   end
 
   describe 'when there are no orders in the system' do

@@ -18,6 +18,7 @@
       <p>Order #<%= order.id %></p>
       <p>User: <%= link_to order.user.name, admin_user_path(order.user) %></p>
       <p>Created at: <%= order.created_at %></p>
+      <%= button_to 'Ship Order', admin_order_path(order), params: {status: :shipped, id: order.id}, method: :patch %>
     </section>
   <% end %>
 </section>
