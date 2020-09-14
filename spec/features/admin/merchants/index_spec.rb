@@ -7,7 +7,7 @@ RSpec.describe 'Admin Merchants Index' do
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
 
-      @merchant_1 = create(:merchant)
+      @merchant_1 = create(:disabled_merchant)
       @merchant_2 = create(:merchant)
       @merchant_3 = create(:merchant)
 
@@ -21,28 +21,19 @@ RSpec.describe 'Admin Merchants Index' do
       create(:item_order, item: item, order: @order_3)
     end
 
-    describe 'when I visit the merchant index' do
-      it 'I can click a merchants name to visit their admin show page' do
-        visit '/merchants'
+    it 'has a button to disable merchants' do
+      visit '/admin/merchants'
 
-        click_link @merchant_2.name
-
-        expect(current_path).to eq("/admin/merchants/#{@merchant_2.id}")
+      within "#merchant-#{@merchant_2.id}" do
+        click_button "disable"
       end
-    end
 
-    it 'shows everything a merchant would see' do
-      visit "/admin/merchants/#{@merchant_2.id}"
+      expect(current_path).to eq('/admin/merchants')
+      expect(page).to have_content("#{@merchant_2.name} is now disabled.")
 
-      expect(page).to have_content(@merchant_2.name)
-      expect(page).to have_content(@merchant_2.address)
-      expect(page).to have_content(@merchant_2.city)
-      expect(page).to have_content(@merchant_2.state)
-      expect(page).to have_content(@merchant_2.zip)
-
-      expect(page).to have_css("#order-#{@order_1.id}")
-      expect(page).to have_css("#order-#{@order_2.id}")
-      expect(page).to_not have_css("#order-#{@order_3.id}")
+      within "#merchant-#{@merchant_2.id}" do
+        expect(page).to have_button('enable')
+      end
     end
   end
 end

@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     get '/', to: 'dashboard#show', as: :dashboard
     resources :users, only: :show
     resources :orders, only: :update
-    resources :merchants, only: :show
+    resources :merchants, only: [:show, :index, :update]
   end
 
   resources :users, only: [:create]
