@@ -1,3 +1,15 @@
-<h2><%= current_user.merchant.name %></h2>
-<p><%= current_user.merchant.address %></p>
-<p><%= current_user.merchant.city %>, <%= current_user.merchant.state %> <%= current_user.merchant.zip %></p>
+<h2><%= @merchant.name %></h2>
+<p><%= @merchant.address %></p>
+<p><%= @merchant.city %>, <%= @merchant.state %> <%= @merchant.zip %></p>
+<% if @merchant.pending_orders? %>
+  <% @merchant.pending_orders.each do |order| %>
+    <section id="order-<%= order.id %>">
+      <%= link_to "Order ##{order.id}", merchant_order_path(order) %>
+      <p>Created at: <%= order.created_at %></p>
+      <p>Quantity of items on this order: <%= @merchant.quantity_ordered(order) %></p>
+      <p>Value of items on this order: <%= @merchant.revenue_from(order) %></p>
+    </section>
+  <% end %>
+<% else %>
+  <p>There are no pending orders.</p>
+<% end %>

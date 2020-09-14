@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   namespace :merchant do
     get '/', to: 'dashboard#show', as: :dashboard
+    resources :orders, only: :show
   end
 
   namespace :admin do
