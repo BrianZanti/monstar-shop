@@ -11,13 +11,8 @@ class Admin::MerchantsController < Admin::BaseController
 
   def update
     merchant = Merchant.find(params[:id])
-    merchant.update(merchant_params)
+    merchant.toggle_enabled
     flash[:success] = "#{merchant.name} is now #{merchant.enabled? ? 'enabled' : 'disabled'}."
     redirect_to admin_merchants_path
-  end
-
-  private
-  def merchant_params
-    params.permit(:enabled?)
   end
 end

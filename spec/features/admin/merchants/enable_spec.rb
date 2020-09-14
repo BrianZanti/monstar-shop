@@ -66,5 +66,23 @@ RSpec.describe 'Admin Merchants Index' do
         expect(page).to have_button('disable')
       end
     end
+
+    it 'when a merchant is enabled, all their items are enabled' do
+      @merchant_2.toggle_enabled
+      
+      visit '/items'
+
+      expect(page).to_not have_css("#item-#{@item.id}")
+
+      visit '/admin/merchants'
+
+      within "#merchant-#{@merchant_2.id}" do
+        click_button "enable"
+      end
+
+      visit '/items'
+
+      expect(page).to have_css("#item-#{@item.id}")
+    end
   end
 end
