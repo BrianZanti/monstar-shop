@@ -41,7 +41,7 @@ RSpec.describe 'Merchant Dashboard' do
         create(:fulfilled_item_order, item: items.first, order: @order_8)
       end
 
-      it 'shows each order' do
+      it 'shows all pending orders' do
         visit merchant_dashboard_path
 
         @merchant.pending_orders.each do |order|
@@ -52,6 +52,10 @@ RSpec.describe 'Merchant Dashboard' do
             expect(page).to have_content("Value of items on this order: #{@merchant.revenue_from(order)}")
           end
         end
+
+        expect(page).to_not have_css("#order-#{@order_5.id}")
+        expect(page).to_not have_css("#order-#{@order_6.id}")
+        expect(page).to_not have_css("#order-#{@order_7.id}")
       end
     end
 
