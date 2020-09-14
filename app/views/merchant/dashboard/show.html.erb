@@ -1,6 +1,7 @@
 <h2><%= @merchant.name %></h2>
 <p><%= @merchant.address %></p>
 <p><%= @merchant.city %>, <%= @merchant.state %> <%= @merchant.zip %></p>
+<%= link_to 'My Items', merchant_dashboard_items_path %>
 <% if @merchant.pending_orders? %>
   <% @merchant.pending_orders.each do |order| %>
     <section id="order-<%= order.id %>">
