@@ -134,7 +134,7 @@ describe Merchant, type: :model do
 
         expected = item_order_1.quantity * item_order_1.convert_price \
                     + item_order_2.quantity * item_order_2.convert_price
-        expect(merchant.revenue_from(order)).to eq(expected)
+        expect(merchant.revenue_from(order).round(2)).to eq(expected.round(2))
       end
 
       it 'returns 0 if no items on the order' do
