@@ -11,14 +11,14 @@ RSpec.describe 'Admin Merchants Index' do
       @merchant_2 = create(:merchant)
       @merchant_3 = create(:merchant)
 
-      item = create(:item, merchant: @merchant_2)
+      @item = create(:item, merchant: @merchant_2)
       @order_1 = create(:order)
       @order_2 = create(:order)
       @order_3 = create(:shipped_order)
 
-      create(:item_order, item: item, order: @order_1)
-      create(:item_order, item: item, order: @order_2)
-      create(:item_order, item: item, order: @order_3)
+      create(:item_order, item: @item, order: @order_1)
+      create(:item_order, item: @item, order: @order_2)
+      create(:item_order, item: @item, order: @order_3)
     end
 
     it 'has a button to disable merchants' do
@@ -34,6 +34,22 @@ RSpec.describe 'Admin Merchants Index' do
       within "#merchant-#{@merchant_2.id}" do
         expect(page).to have_button('enable')
       end
+    end
+
+    it 'when a merchant is disabled, their items are deactivated' do
+      visit '/items'
+
+      expect(page).to have_css("#item-#{@item.id}")
+
+      visit '/admin/merchants'
+
+      within "#merchant-#{@merchant_2.id}" do
+        click_button "disable"
+      end
+
+      visit '/items'
+
+      expect(page).to_not have_css("#item-#{@item.id}")
     end
 
     it 'has a button to enable merchants' do
