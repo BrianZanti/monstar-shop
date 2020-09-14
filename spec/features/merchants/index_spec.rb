@@ -11,7 +11,7 @@ RSpec.describe 'merchant index page', type: :feature do
       visit '/merchants'
 
       expect(page).to have_link("Brian's Bike Shop")
-      expect(page).to have_link("Meg's Dog Shop")
+      expect(page).to have_link("Meg's Dog Shop", href: "/merchants/#{@dog_shop.id}")
     end
 
     it 'I can see a link to create a new merchant' do

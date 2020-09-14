@@ -11,6 +11,8 @@ describe Merchant, type: :model do
 
   describe "relationships" do
     it {should have_many :items}
+    it {should have_many(:item_orders).through(:items)}
+    it {should have_many(:orders).through(:item_orders)}
   end
 
   describe 'instance methods' do
@@ -18,6 +20,7 @@ describe Merchant, type: :model do
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
       @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
     end
+
     it 'no_orders' do
       expect(@meg.no_orders?).to eq(true)
 
@@ -53,5 +56,108 @@ describe Merchant, type: :model do
       expect(@meg.distinct_cities).to include("Hershey")
     end
 
+    describe '#pending_orders' do
+      before :each do
+        @merchant = create(:merchant)
+        items = create_list(:item, 3, merchant: @merchant)
+        @order_1 = create(:order)
+        @order_2 = create(:order)
+        @order_3 = create(:order)
+        @order_4 = create(:order)
+        @order_5 = create(:shipped_order)
+        @order_6 = create(:cancelled_order)
+        @order_7 = create(:packaged_order)
+        @order_8 = create(:order)
+        create(:item_order, item: items.first, order: @order_1)
+        create_list(:item_order, 2, order: @order_1)
+        create_list(:item_order, 2, order: @order_2)
+        create(:item_order, item: items.second, order: @order_3)
+        create(:item_order, order: @order_4)
+        create(:item_order, item: items.third, order: @order_5)
+        create(:item_order, item: items.first, order: @order_6)
+        create(:item_order, item: items.second, order: @order_7)
+        create(:fulfilled_item_order, item: items.first, order: @order_8)
+      end
+
+      it 'returns any orders that contain the merchants items' do
+        expect(@merchant.pending_orders).to include(@order_1)
+        expect(@merchant.pending_orders).to include(@order_3)
+      end
+
+      it 'only returns orders where the item is unfulfilled' do
+        expect(@merchant.pending_orders).to_not include(@order_8)
+      end
+
+      it 'returns only pending orders' do
+        expect(@merchant.pending_orders).to_not include(@order_5)
+        expect(@merchant.pending_orders).to_not include(@order_6)
+        expect(@merchant.pending_orders).to_not include(@order_7)
+      end
+
+      it 'can return an empty array' do
+        merchant = create(:merchant)
+        expect(merchant.pending_orders).to eq([])
+      end
+    end
+
+    describe '#quantity_ordered' do
+      it 'returns the count of items' do
+        merchant = create(:merchant)
+        items = create_list(:item, 3, merchant: merchant)
+        order = create(:order)
+        create_list(:order, 5)
+        item_order_1 = create(:item_order, order: order, item: items.first)
+        create_list(:item_order, 5, order: order)
+        item_order_2 = create(:item_order, order: order, item: items.second)
+
+        expected = item_order_1.quantity + item_order_2.quantity
+        expect(merchant.quantity_ordered(order)).to eq(expected)
+      end
+
+      it 'returns 0 if no items on the order' do
+        merchant = create(:merchant)
+        order = create(:order)
+        create_list(:item_order, 3, order: order)
+        expect(merchant.quantity_ordered(order)).to eq(0)
+      end
+    end
+
+    describe '#revenue_from' do
+      it 'returns the revenue from items on the order' do
+        merchant = create(:merchant)
+        items = create_list(:item, 3, merchant: merchant)
+        order = create(:order)
+        create_list(:order, 5)
+        item_order_1 = create(:item_order, order: order, item: items.first)
+        create_list(:item_order, 5, order: order)
+        item_order_2 = create(:item_order, order: order, item: items.second)
+
+        expected = item_order_1.quantity * item_order_1.convert_price \
+                    + item_order_2.quantity * item_order_2.convert_price
+        expect(merchant.revenue_from(order).round(2)).to eq(expected.round(2))
+      end
+
+      it 'returns 0 if no items on the order' do
+        merchant = create(:merchant)
+        order = create(:order)
+        create_list(:item_order, 3, order: order)
+        expect(merchant.revenue_from(order)).to eq(0)
+      end
+    end
+  end
+
+  describe '#pending_orders?' do
+    it 'returns true if there are pending orders' do
+      merchant = create(:merchant)
+      item = create(:item, merchant: merchant)
+      order = create(:order)
+      create(:item_order, item: item, order: order)
+      expect(merchant.pending_orders?).to be(true)
+    end
+
+    it 'returns false if there are no pending orders' do
+      merchant = create(:merchant)
+      expect(merchant.pending_orders?).to be(false)
+    end
   end
 end

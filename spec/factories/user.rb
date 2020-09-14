@@ -10,6 +10,7 @@ FactoryBot.define do
 
     factory :merchant_employee do
       role {:merchant_employee}
+      merchant
     end
 
     factory :admin do
