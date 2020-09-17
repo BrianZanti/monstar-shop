@@ -160,4 +160,40 @@ describe Merchant, type: :model do
       expect(merchant.pending_orders?).to be(false)
     end
   end
+
+  describe '#toggle' do
+    before :each do
+      @merchant = create(:merchant)
+      @items = create_list(:item, 3, merchant: @merchant)
+    end
+
+    it 'can change a merchant from enabled to disabled' do
+      expect(@merchant.enabled?).to be(true)
+      @merchant.toggle_enabled
+      @merchant.reload
+      expect(@merchant.enabled?).to be(false)
+    end
+
+    it 'can change a merchant from disabled to enabled' do
+      @merchant.update(enabled?: false)
+      expect(@merchant.enabled?).to be(false)
+      @merchant.toggle_enabled
+      @merchant.reload
+      expect(@merchant.enabled?).to be(true)
+    end
+
+    it 'deactivates all of the merchants items when disabling' do
+      expect(@merchant.items.any?(&:active?)).to be(true)
+      @merchant.toggle_enabled
+      expect(@merchant.items.any?(&:active?)).to be(false)
+    end
+
+    it 'activates all of the merchants items when enabling' do
+      @merchant.items.update(active?: false)
+      @merchant.update(enabled?: false)
+      expect(@merchant.items.all?(&:active?)).to be(false)
+      @merchant.toggle_enabled
+      expect(@merchant.items.all?(&:active?)).to be(true)
+    end
+  end
 end

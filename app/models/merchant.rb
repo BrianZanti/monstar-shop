@@ -48,4 +48,13 @@ class Merchant < ApplicationRecord
                 .sum('item_orders.quantity * item_orders.price')
     revenue / 100.0
   end
+
+  def toggle_enabled
+    self.toggle!(:enabled?)
+    if self.enabled?
+      self.items.update(active?: true)
+    else
+      self.items.update(active?: false)
+    end
+  end
 end
